@@ -1,4 +1,5 @@
 [workspace]
 members = [
-    "p0001"
+    "p0001",
+    "p0002"
 ]
