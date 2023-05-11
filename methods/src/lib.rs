@@ -10,7 +10,7 @@ pub fn is_factor(x: u64, f: u64) -> bool {
 
 /// Checks if `f` is a prime factor of `x`.
 pub fn is_prime_factor(x: u64, f: u64) -> bool {
-    is_factor(x, f) && get_prime_factors(f).is_empty()
+    is_factor(x, f) && is_prime(f)
 }
 
 /// Returns the factors of a number, excluding 1 and itself.
@@ -35,6 +35,11 @@ pub fn get_prime_factors(x: u64) -> Vec<u64> {
     } else {
         vec![]
     }
+}
+
+/// Checks if a number is prime
+pub fn is_prime(f: u64) -> bool {
+    get_prime_factors(f).is_empty()
 }
 
 /// Checks if number is palindrome.
