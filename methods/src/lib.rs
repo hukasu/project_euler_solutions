@@ -90,6 +90,16 @@ pub fn smallest_multiple_of_all_through_x(x: u64) -> u64 {
         })
 }
 
+/// Get the sum of the squares from 1 through `x`.
+pub fn sum_of_squares(x: u64) -> u64 {
+    (1..=x).map(|x| x.pow(2)).sum()
+}
+
+/// Get the square of sum from 1 through `x`.
+pub fn square_of_sum(x: u64) -> u64 {
+    (1..=x).sum::<u64>().pow(2)
+}
+
 #[cfg(test)]
 mod tests {
     use crate::*;
@@ -144,5 +154,15 @@ mod tests {
     #[test]
     fn multiple_of_all_test() {
         assert_eq!(smallest_multiple_of_all_through_x(10), 2520);
+    }
+
+    #[test]
+    fn sum_of_squares_test() {
+        assert_eq!(sum_of_squares(10), 385);
+    }
+
+    #[test]
+    fn square_of_sum_test() {
+        assert_eq!(square_of_sum(10), 3025);
     }
 }
