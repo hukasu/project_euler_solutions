@@ -114,6 +114,25 @@ pub fn nth_prime(n: u64) -> u64 {
     })
 }
 
+/// Get the biggest product
+pub fn biggest_adjacent_product(long_number: &str, adjacency: usize) -> u64 {
+    let mut window = vec![0_u64; adjacency];
+    let mut window_i = 0;
+    let mut biggest = 0;
+    for c in long_number.chars() {
+        window[window_i] = c.to_digit(10).unwrap() as u64;
+        window_i += 1;
+        if window_i.ge(&window.len()) {
+            window_i = 0;
+        }
+        let prod: u64 = window.iter().product();
+        if prod.ge(&biggest) {
+            biggest = prod;
+        }
+    }
+    biggest
+}
+
 #[cfg(test)]
 mod tests {
     use crate::*;
