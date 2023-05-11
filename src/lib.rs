@@ -133,6 +133,12 @@ pub fn biggest_adjacent_product(long_number: &str, adjacency: usize) -> u64 {
     biggest
 }
 
+/// Check if triplet is a Pythagorean triplet.
+/// a^2 + b^2 = c^2
+pub fn is_pythagorean_triplet(a: u64, b: u64, c: u64) -> bool {
+    false
+}
+
 #[cfg(test)]
 mod tests {
     use crate::*;

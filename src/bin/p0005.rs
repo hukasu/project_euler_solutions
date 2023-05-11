@@ -1,4 +1,4 @@
-use methods::get_prime_factors_frequencies;
+use project_euler::get_prime_factors_frequencies;
 
 fn main() {
     let r = (1..20)

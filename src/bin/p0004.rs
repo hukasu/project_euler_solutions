@@ -1,4 +1,4 @@
-use methods::is_palindrome;
+use project_euler::is_palindrome;
 
 fn main() {
     'outer: for a in (100..=999).rev() {

@@ -1,12 +1,8 @@
-[workspace]
-members = [
-    "methods",
-    "p0001",
-    "p0002",
-    "p0003",
-    "p0004",
-    "p0005",
-    "p0006",
-    "p0007",
-    "p0008"
-]
+[package]
+name = "project_euler"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
