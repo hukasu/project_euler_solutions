@@ -114,6 +114,32 @@ pub fn nth_prime(n: u64) -> u64 {
     })
 }
 
+/// Get all primes up to `n`.
+pub fn primes_up_to(x: u64) -> Vec<u64> {
+    (0..1)
+        .cycle()
+        .scan(1_u64, |prev, _| match *prev {
+            1 => {
+                *prev = 2;
+                Some(2)
+            }
+            2 => {
+                *prev = 3;
+                Some(3)
+            }
+            mut next => loop {
+                next += 2;
+                if next.gt(&x) {
+                    return None;
+                } else if is_prime(next) {
+                    *prev = next;
+                    break Some(next);
+                }
+            },
+        })
+        .collect()
+}
+
 /// Get the biggest product
 pub fn biggest_adjacent_product(long_number: &str, adjacency: usize) -> u64 {
     let mut window = vec![0_u64; adjacency];
