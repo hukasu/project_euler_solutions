@@ -262,6 +262,24 @@ pub fn grid_diagonal_left_product<const N: usize>(
         .map(|v| v.into_iter().product())
 }
 
+/// Get the first Triagle number with N factors.
+pub fn first_triangle_number_with_over_n_factors(factor_count: u64) -> u64 {
+    let mut cont = true;
+    (1_u64..=factor_count.pow(2))
+        .scan(0, |prev, cur| {
+            if cont {
+                let s = *prev + cur;
+                *prev = s;
+                cont = get_factors(s).len().lt(&(factor_count as usize - 2));
+                Some(s)
+            } else {
+                None
+            }
+        })
+        .max()
+        .unwrap_or(0)
+}
+
 #[cfg(test)]
 mod tests {
     use crate::*;
