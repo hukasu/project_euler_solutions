@@ -178,6 +178,90 @@ pub fn special_pythagorean_triplet(x: u64) -> Option<(u64, u64, u64)> {
     None
 }
 
+/// Get the biggest product of adjacent values in a given direction (up, down, left, right or diagonally).
+pub fn biggest_grid_adjacent_product<const N: usize>(
+    grid: &[[u64; N]; N],
+    adjacency: usize,
+) -> u64 {
+    let mut biggest = 0;
+    for x in 0..N {
+        for y in 0..N {
+            let max = vec![
+                grid_vertical_product(grid, x, y, adjacency),
+                grid_horizontal_product(grid, x, y, adjacency),
+                grid_diagonal_right_product(grid, x, y, adjacency),
+                grid_diagonal_left_product(grid, x, y, adjacency),
+            ]
+            .into_iter()
+            .max();
+            if let Some(Some(m)) = max {
+                if m.ge(&biggest) {
+                    biggest = m;
+                }
+            }
+        }
+    }
+    biggest
+}
+
+/// Get the product of the vertically adjacent values of a grid.
+pub fn grid_vertical_product<const N: usize>(
+    grid: &[[u64; N]; N],
+    x: usize,
+    y: usize,
+    adjacency: usize,
+) -> Option<u64> {
+    (0..adjacency)
+        .map(|offset| grid.get(y + offset).and_then(|inner| inner.get(x)))
+        .collect::<Option<Vec<_>>>()
+        .map(|v| v.into_iter().product())
+}
+
+/// Get the product of the horizontally adjacent values of a grid.
+pub fn grid_horizontal_product<const N: usize>(
+    grid: &[[u64; N]; N],
+    x: usize,
+    y: usize,
+    adjacency: usize,
+) -> Option<u64> {
+    (0..adjacency)
+        .map(|offset| grid.get(y).and_then(|inner| inner.get(x + offset)))
+        .collect::<Option<Vec<_>>>()
+        .map(|v| v.into_iter().product())
+}
+
+/// Get the product of the diagonally right adjacent values of a grid.
+pub fn grid_diagonal_right_product<const N: usize>(
+    grid: &[[u64; N]; N],
+    x: usize,
+    y: usize,
+    adjacency: usize,
+) -> Option<u64> {
+    (0..adjacency)
+        .map(|offset| grid.get(y + offset).and_then(|inner| inner.get(x + offset)))
+        .collect::<Option<Vec<_>>>()
+        .map(|v| v.into_iter().product())
+}
+
+/// Get the product of the diagonally left adjacent values of a grid.
+pub fn grid_diagonal_left_product<const N: usize>(
+    grid: &[[u64; N]; N],
+    x: usize,
+    y: usize,
+    adjacency: usize,
+) -> Option<u64> {
+    (0..adjacency)
+        .map(|offset| {
+            if x.ge(&offset) {
+                grid.get(y + offset).and_then(|inner| inner.get(x - offset))
+            } else {
+                None
+            }
+        })
+        .collect::<Option<Vec<_>>>()
+        .map(|v| v.into_iter().product())
+}
+
 #[cfg(test)]
 mod tests {
     use crate::*;
