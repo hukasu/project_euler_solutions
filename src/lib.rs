@@ -136,7 +136,20 @@ pub fn biggest_adjacent_product(long_number: &str, adjacency: usize) -> u64 {
 /// Check if triplet is a Pythagorean triplet.
 /// a^2 + b^2 = c^2
 pub fn is_pythagorean_triplet(a: u64, b: u64, c: u64) -> bool {
-    false
+    a.pow(2) + b.pow(2) == c.pow(2)
+}
+
+/// Finds a special Pythagorean triplet where `a + b + c = x`.
+pub fn special_pythagorean_triplet(x: u64) -> Option<(u64, u64, u64)> {
+    for c in (1..x).rev() {
+        for b in (1..(x - c)).rev() {
+            let a = x - (b + c);
+            if is_pythagorean_triplet(a, b, c) {
+                return Some((a, b, c));
+            }
+        }
+    }
+    None
 }
 
 #[cfg(test)]
