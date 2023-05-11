@@ -100,6 +100,20 @@ pub fn square_of_sum(x: u64) -> u64 {
     (1..=x).sum::<u64>().pow(2)
 }
 
+/// Get the N-th prime.
+pub fn nth_prime(n: u64) -> u64 {
+    (0..n).fold(1_u64, |prev, _| match prev {
+        1 => 2,
+        2 => 3,
+        mut next => loop {
+            next += 2;
+            if is_prime(next) {
+                break next;
+            }
+        },
+    })
+}
+
 #[cfg(test)]
 mod tests {
     use crate::*;
@@ -164,5 +178,15 @@ mod tests {
     #[test]
     fn square_of_sum_test() {
         assert_eq!(square_of_sum(10), 3025);
+    }
+
+    #[test]
+    fn nth_prime_test() {
+        assert_eq!(nth_prime(1), 2);
+        assert_eq!(nth_prime(2), 3);
+        assert_eq!(nth_prime(3), 5);
+        assert_eq!(nth_prime(4), 7);
+        assert_eq!(nth_prime(5), 11);
+        assert_eq!(nth_prime(6), 13);
     }
 }
