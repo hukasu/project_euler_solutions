@@ -280,6 +280,41 @@ pub fn first_triangle_number_with_over_n_factors(factor_count: u64) -> u64 {
         .unwrap_or(0)
 }
 
+/// Add two lists of digits.
+pub fn add_digit_lists(lhs: Vec<u8>, rhs: Vec<u8>) -> Vec<u8> {
+    let mut l = lhs.into_iter().rev();
+    let mut r = rhs.into_iter().rev();
+
+    let mut carry = 0;
+    let mut out = vec![];
+    loop {
+        match (l.next(), r.next()) {
+            (Some(lv), Some(rv)) => {
+                let add = lv + rv + carry;
+                carry = add / 10;
+                out.push(add % 10);
+            },
+            (Some(lv), None) => {
+                let add = lv + carry;
+                carry = add / 10;
+                out.push(add % 10);
+            },
+            (None, Some(rv)) => {
+                let add = rv + carry;
+                carry = add / 10;
+                out.push(add % 10);
+            },
+            (None, None) => {
+                if carry > 0 {
+                    out.push(carry);
+                }
+                break;
+            }
+        }
+    }
+    out.into_iter().rev().collect()
+}
+
 #[cfg(test)]
 mod tests {
     use crate::*;
