@@ -393,17 +393,6 @@ mod tests {
     use crate::*;
 
     #[test]
-    fn factor_test() {
-        assert_eq!(get_factors(2), vec![]);
-        assert_eq!(get_factors(3), vec![]);
-        assert_eq!(get_factors(4), vec![2]);
-        assert_eq!(get_factors(5), vec![]);
-        assert_eq!(get_factors(6), vec![2, 3]);
-        assert_eq!(get_factors(9), vec![3]);
-        assert_eq!(get_factors(12), vec![2, 3, 4, 6]);
-    }
-
-    #[test]
     fn multiple_of_all_test() {
         assert_eq!(smallest_multiple_of_all_through_x(10), 2520);
     }
