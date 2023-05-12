@@ -1,9 +1,15 @@
 use project_euler::add_digit_lists;
 
 fn main() {
-    let nums: Vec<Vec<u8>> = LONG_NUMBER.iter().map(|ln| ln.chars().map(|c| c.to_digit(10).unwrap() as u8).collect()).collect();
+    let nums: Vec<Vec<u8>> = LONG_NUMBER
+        .iter()
+        .map(|ln| ln.chars().map(|c| c.to_digit(10).unwrap() as u8).collect())
+        .collect();
     let r = nums.into_iter().reduce(add_digit_lists).unwrap();
-    println!("{:?}", r.into_iter().map(|d| d.to_string()).collect::<String>());
+    println!(
+        "{:?}",
+        r.into_iter().map(|d| d.to_string()).collect::<String>()
+    );
 }
 
 const LONG_NUMBER: [&str; 100] = [
@@ -108,4 +114,3 @@ const LONG_NUMBER: [&str; 100] = [
     "20849603980134001723930671666823555245252804609722",
     "53503534226472524250874054075591789781264330331690",
 ];
-

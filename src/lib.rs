@@ -293,17 +293,17 @@ pub fn add_digit_lists(lhs: Vec<u8>, rhs: Vec<u8>) -> Vec<u8> {
                 let add = lv + rv + carry;
                 carry = add / 10;
                 out.push(add % 10);
-            },
+            }
             (Some(lv), None) => {
                 let add = lv + carry;
                 carry = add / 10;
                 out.push(add % 10);
-            },
+            }
             (None, Some(rv)) => {
                 let add = rv + carry;
                 carry = add / 10;
                 out.push(add % 10);
-            },
+            }
             (None, None) => {
                 if carry > 0 {
                     out.push(carry);
@@ -313,6 +313,32 @@ pub fn add_digit_lists(lhs: Vec<u8>, rhs: Vec<u8>) -> Vec<u8> {
         }
     }
     out.into_iter().rev().collect()
+}
+
+/// Generates Collatz sequence of `x`.
+pub fn collatz_sequence(x: u64) -> Vec<u64> {
+    (0..1)
+        .cycle()
+        .scan(x, |x, _| {
+            let old = *x;
+            match x {
+                0 => None,
+                1 => {
+                    *x = 0;
+                    Some(1)
+                }
+                x if *x % 2 == 0 => {
+                    *x /= 2;
+                    Some(old)
+                }
+                x if *x % 2 == 1 => {
+                    *x = 3 * *x + 1;
+                    Some(old)
+                }
+                _ => panic!("Exhausted branches."),
+            }
+        })
+        .collect()
 }
 
 #[cfg(test)]
