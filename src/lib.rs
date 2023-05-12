@@ -280,6 +280,11 @@ pub fn first_triangle_number_with_over_n_factors(factor_count: u64) -> u64 {
         .unwrap_or(0)
 }
 
+/// String to list of digits
+pub fn string_to_list_of_digits(s: &str) -> Vec<u8> {
+    s.chars().map(|c| c.to_digit(10).unwrap() as u8).collect()
+}
+
 /// Add two lists of digits.
 pub fn add_digit_lists(lhs: Vec<u8>, rhs: Vec<u8>) -> Vec<u8> {
     let mut l = lhs.into_iter().rev();

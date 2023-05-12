@@ -1,9 +1,9 @@
-use project_euler::add_digit_lists;
+use project_euler::{add_digit_lists, string_to_list_of_digits};
 
 fn main() {
     let nums: Vec<Vec<u8>> = LONG_NUMBER
         .iter()
-        .map(|ln| ln.chars().map(|c| c.to_digit(10).unwrap() as u8).collect())
+        .map(|ln| string_to_list_of_digits(ln))
         .collect();
     let r = nums.into_iter().reduce(add_digit_lists).unwrap();
     println!(
