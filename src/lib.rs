@@ -341,6 +341,27 @@ pub fn collatz_sequence(x: u64) -> Vec<u64> {
         .collect()
 }
 
+/// Calculate number of paths on a grid walk with only `down`, or `right` moves.
+pub fn grid_walk_path_count(w: usize, h: usize) -> u128 {
+    let empty = vec![];
+    let mut grid = vec![vec![1_u128; h + 1]; w + 1];
+    for y in 0..=h {
+        for x in 0..=w {
+            if x + y == 0 {
+                continue;
+            }
+            grid[x][y] = *grid
+                .get(x.wrapping_sub(1))
+                .unwrap_or(&empty)
+                .get(y)
+                .unwrap_or(&0)
+                + *grid.get(x).unwrap().get(y.wrapping_sub(1)).unwrap_or(&0);
+        }
+    }
+
+    grid[w][h]
+}
+
 #[cfg(test)]
 mod tests {
     use crate::*;
