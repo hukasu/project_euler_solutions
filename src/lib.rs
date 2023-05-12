@@ -421,15 +421,6 @@ mod tests {
     }
 
     #[test]
-    fn palindrome_test() {
-        assert!(is_palindrome(9));
-        assert!(is_palindrome(99));
-        assert!(is_palindrome(909));
-        assert!(is_palindrome(9009));
-        assert!(is_palindrome(90109));
-    }
-
-    #[test]
     fn multiple_of_all_test() {
         assert_eq!(smallest_multiple_of_all_through_x(10), 2520);
     }

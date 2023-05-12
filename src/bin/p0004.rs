@@ -14,3 +14,17 @@ fn main() {
         }
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn palindrome_test() {
+        assert!(is_palindrome(9));
+        assert!(is_palindrome(99));
+        assert!(is_palindrome(909));
+        assert!(is_palindrome(9009));
+        assert!(is_palindrome(90109));
+    }
+}

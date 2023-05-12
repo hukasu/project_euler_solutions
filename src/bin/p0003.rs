@@ -4,10 +4,9 @@ fn main() {
     println!("{:?}", get_prime_factors(600851475143));
 }
 
-
 #[cfg(test)]
 mod tests {
-    use crate::*;
+    use super::*;
 
     #[test]
     fn prime_factor_test() {
