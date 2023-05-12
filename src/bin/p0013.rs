@@ -5,7 +5,7 @@ fn main() {
         .iter()
         .map(|ln| string_to_list_of_digits(ln))
         .collect();
-    let r = nums.into_iter().reduce(add_digit_lists).unwrap();
+    let r = nums.iter().fold(vec![0_u8], |a, b| add_digit_lists(&a, b));
     println!(
         "{:?}",
         r.into_iter().map(|d| d.to_string()).collect::<String>()

@@ -286,7 +286,7 @@ pub fn string_to_list_of_digits(s: &str) -> Vec<u8> {
 }
 
 /// Add two lists of digits.
-pub fn add_digit_lists(lhs: Vec<u8>, rhs: Vec<u8>) -> Vec<u8> {
+pub fn add_digit_lists(lhs: &Vec<u8>, rhs: &Vec<u8>) -> Vec<u8> {
     let mut l = lhs.into_iter().rev();
     let mut r = rhs.into_iter().rev();
 
