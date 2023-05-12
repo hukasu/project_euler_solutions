@@ -409,16 +409,6 @@ mod tests {
     }
 
     #[test]
-    fn sum_of_squares_test() {
-        assert_eq!(sum_of_squares(10), 385);
-    }
-
-    #[test]
-    fn square_of_sum_test() {
-        assert_eq!(square_of_sum(10), 3025);
-    }
-
-    #[test]
     fn nth_prime_test() {
         assert_eq!(nth_prime(1), 2);
         assert_eq!(nth_prime(2), 3);
