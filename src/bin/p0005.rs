@@ -1,32 +1,21 @@
-use project_euler::get_prime_factors_frequencies;
+use project_euler::smallest_multiple_of_all_through_x;
 
 fn main() {
-    let r = (1..20)
-        .map(get_prime_factors_frequencies)
-        .reduce(|mut m, cm| {
-            for (k, v) in cm.iter() {
-                let ff = m.get(k).unwrap_or(&0);
-                if v.ge(ff) {
-                    m.insert(*k, *v)
-                } else {
-                    m.insert(*k, *ff)
-                };
-            }
-            m
-        })
-        .unwrap_or_default()
-        .iter()
-        .fold(1_u64, |mut p, (k, v)| {
-            p *= k.pow(*v as u32);
-            p
-        });
+    let r = smallest_multiple_of_all_through_x(20);
     println!("{r:?}");
 }
 
 #[cfg(test)]
 mod test {
+    use project_euler::get_prime_factors_frequencies;
+
     use super::*;
     use std::collections::HashMap;
+
+    #[test]
+    fn multiple_of_all_test() {
+        assert_eq!(smallest_multiple_of_all_through_x(10), 2520);
+    }
 
     #[test]
     fn prime_factor_frequencies_test() {

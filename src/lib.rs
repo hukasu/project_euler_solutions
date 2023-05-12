@@ -387,13 +387,3 @@ pub fn power_digit_sum(x: u64, n: u64) -> u64 {
         .map(|d| d as u64)
         .sum()
 }
-
-#[cfg(test)]
-mod tests {
-    use crate::*;
-
-    #[test]
-    fn multiple_of_all_test() {
-        assert_eq!(smallest_multiple_of_all_through_x(10), 2520);
-    }
-}
