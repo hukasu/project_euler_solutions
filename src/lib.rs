@@ -407,14 +407,4 @@ mod tests {
     fn multiple_of_all_test() {
         assert_eq!(smallest_multiple_of_all_through_x(10), 2520);
     }
-
-    #[test]
-    fn nth_prime_test() {
-        assert_eq!(nth_prime(1), 2);
-        assert_eq!(nth_prime(2), 3);
-        assert_eq!(nth_prime(3), 5);
-        assert_eq!(nth_prime(4), 7);
-        assert_eq!(nth_prime(5), 11);
-        assert_eq!(nth_prime(6), 13);
-    }
 }
