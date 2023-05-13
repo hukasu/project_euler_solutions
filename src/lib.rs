@@ -393,3 +393,119 @@ pub fn power_digit_sum(x: u64, n: u64) -> u64 {
         .map(|d| d as u64)
         .sum()
 }
+
+/// Get the number of days in year.
+/// ```
+/// # use project_euler::days_in_year;
+/// assert_eq!(days_in_year(1900), 365);
+/// assert_eq!(days_in_year(1904), 366);
+/// assert_eq!(days_in_year(2000), 366);
+/// assert_eq!(days_in_year(2001), 365);
+/// assert_eq!(days_in_year(2004), 366);
+/// ```
+pub fn days_in_year(year: u64) -> u64 {
+    let leap = if year % 400 == 0 {
+        1
+    } else if year % 100 == 0 {
+        0
+    } else if year % 4 == 0 {
+        1
+    } else {
+        0
+    };
+    365 + leap
+}
+
+/// Count the number of days between 2 dates.
+/// The dates should be input in ordinal format.
+/// ```
+/// # use project_euler::days_between_two_dates;
+/// assert_eq!(days_between_two_dates((1900, 1), (1900, 1)), Ok(0));
+/// assert_eq!(days_between_two_dates((1900, 1), (1900, 2)), Ok(1));
+/// assert_eq!(days_between_two_dates((1900, 1), (1900, 7)), Ok(6));
+/// assert_eq!(days_between_two_dates((1900, 1), (1900, 365)), Ok(364));
+/// assert_eq!(days_between_two_dates((1900, 1), (1901, 1)), Ok(365));
+/// assert!(days_between_two_dates((1993, 1), (1902, 1)).is_err());
+/// assert!(days_between_two_dates((1900, 1), (1900, 366)).is_err());
+/// assert_eq!(days_between_two_dates((1900, 1), (1904, 366)), Ok(1825));
+/// ```
+pub fn days_between_two_dates(
+    (year1, day1): (u64, u64),
+    (year2, day2): (u64, u64),
+) -> Result<u64, String> {
+    if day1 == 0 || day2 == 0 {
+        Err("The first day in a year is the 1st.".to_owned())
+    } else if year2.lt(&year1) || (year2.eq(&year1) && day2.lt(&day1)) {
+        Err("The second date must be greater than the first.".to_owned())
+    } else if days_in_year(year1).lt(&day1) || days_in_year(year2).lt(&day2) {
+        Err("The day passed is greater then the number of days in the year.".to_owned())
+    } else {
+        Ok((year1..=year2)
+            .map(|y| {
+                let days_in_year = days_in_year(y);
+                let discount = if y == year1 { day1 } else { 0 }
+                    + if y == year2 {
+                        days_in_year.saturating_sub(day2)
+                    } else {
+                        0
+                    };
+                days_in_year - discount
+            })
+            .sum())
+    }
+}
+
+/// Count the number of weeks between 2 dates.
+/// The dates should be input in ordinal format.
+///
+/// # Return
+/// Returns a tuple with the first value being the number of weeks, and the second the number of extra days.
+/// ```
+/// # use project_euler::weeks_between_two_dates;
+/// assert_eq!(weeks_between_two_dates((1900, 1), (1900, 1)), Ok((0, 0)));
+/// assert_eq!(weeks_between_two_dates((1900, 1), (1900, 2)), Ok((0, 1)));
+/// assert_eq!(weeks_between_two_dates((1900, 1), (1900, 7)), Ok((0, 6)));
+/// assert_eq!(weeks_between_two_dates((1900, 1), (1900, 8)), Ok((1, 0)));
+/// ```
+pub fn weeks_between_two_dates(
+    (year1, day1): (u64, u64),
+    (year2, day2): (u64, u64),
+) -> Result<(u64, u64), String> {
+    let days = days_between_two_dates((year1, day1), (year2, day2))?;
+    Ok((days / 7, days % 7))
+}
+
+/// Count number of Sundays on the first of the month.
+pub fn sundays_on_the_first_of_the_month(date1: (u64, u64, u64), date2: (u64, u64, u64)) -> u64 {
+    const MONTHS_WITH_30_DAYS: [u64; 4] = [4, 6, 9, 11];
+    // Jan 1, 1900 is a Monday
+    let mut current_date = (1900, 1, 7); // Initialized with the first Sunday of 1900
+    let mut count = 0;
+    while current_date < date2 {
+        if current_date.2 == 1 && current_date > date1 {
+            count += 1;
+        }
+        let month_limit = if current_date.1 == 2 {
+            if days_in_year(current_date.0) == 366 {
+                29
+            } else {
+                28
+            }
+        } else if MONTHS_WITH_30_DAYS.contains(&current_date.1) {
+            30
+        } else {
+            31
+        };
+        let (next_month, next_day) = (
+            current_date.1 + (current_date.2 + 7) / month_limit,
+            (current_date.2 + 7) % month_limit,
+        );
+        let (next_year, next_month) = if next_month == 13 {
+            (current_date.0 + 1, 1)
+        } else {
+            (current_date.0, next_month)
+        };
+        current_date = (next_year, next_month, next_day)
+    }
+    count
+}
