@@ -520,3 +520,14 @@ pub fn is_amicable_number(a: u64) -> bool {
     let ra = get_factors(b).into_iter().sum::<u64>() + 1;
     a.ne(&b) && a.eq(&ra)
 }
+
+/// Calculate String score.
+///
+/// The score of a uppercase ASCII String is the sum of each letters score, where `A` = 1, `B` = 2, etc.
+pub fn uppercase_ascii_string_score(s: &str) -> u64 {
+    if s.chars().all(|c| c.is_ascii_uppercase()) {
+        s.chars().map(|c| (c as u8 - b'A' + 1) as u64).sum::<u64>()
+    } else {
+        panic!("The String contains non uppercase ASCII characters.");
+    }
+}
