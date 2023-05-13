@@ -509,3 +509,14 @@ pub fn sundays_on_the_first_of_the_month(date1: (u64, u64, u64), date2: (u64, u6
     }
     count
 }
+
+/// Check if a number is amicable.
+///
+/// An amicable number pair is where `sum_of_factors(a) = b` and `sum_of_factors(b) = a`, and `a != b`.
+///
+/// **Note**: The sum excludes the number itself, i.e. `sum_of_factors(6) = 1 + 2 + 3`
+pub fn is_amicable_number(a: u64) -> bool {
+    let b = get_factors(a).into_iter().sum::<u64>() + 1;
+    let ra = get_factors(b).into_iter().sum::<u64>() + 1;
+    a.ne(&b) && a.eq(&ra)
+}
