@@ -7,6 +7,10 @@ use std::{
 pub struct BigUInt(Vec<u8>);
 
 impl BigUInt {
+    pub fn number_of_digits(&self) -> usize {
+        self.0.len()
+    }
+
     pub fn pow(self, n: u64) -> Self {
         (0..n).fold(BigUInt::from(1), |sum, _| self.clone() * sum)
     }
