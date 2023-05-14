@@ -1,15 +1,9 @@
-use project_euler::{add_digit_lists, string_to_list_of_digits};
+use project_euler::BigUInt;
 
 fn main() {
-    let nums: Vec<Vec<u8>> = LONG_NUMBER
-        .iter()
-        .map(|ln| string_to_list_of_digits(ln))
-        .collect();
-    let r = nums.iter().fold(vec![0_u8], |a, b| add_digit_lists(&a, b));
-    println!(
-        "{:?}",
-        r.into_iter().map(|d| d.to_string()).collect::<String>()
-    );
+    let nums: Vec<BigUInt> = LONG_NUMBER.iter().map(|ln| (*ln).into()).collect();
+    let r = nums.iter().fold(BigUInt::default(), |a, b| a + b.clone());
+    println!("{:?}", r);
 }
 
 const LONG_NUMBER: [&str; 100] = [

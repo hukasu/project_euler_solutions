@@ -1,5 +1,8 @@
 use std::collections::{BTreeSet, HashMap};
 
+mod big_uint;
+pub use big_uint::*;
+
 mod british_usage;
 pub use british_usage::*;
 
@@ -286,57 +289,6 @@ pub fn first_triangle_number_with_over_n_factors(factor_count: u64) -> u64 {
         .unwrap_or(0)
 }
 
-/// String to list of digits
-pub fn string_to_list_of_digits(s: &str) -> Vec<u8> {
-    s.chars().map(|c| c.to_digit(10).unwrap() as u8).collect()
-}
-
-/// Add two lists of digits.
-pub fn add_digit_lists(lhs: &[u8], rhs: &[u8]) -> Vec<u8> {
-    let mut l = lhs.iter().rev();
-    let mut r = rhs.iter().rev();
-
-    let mut carry = 0;
-    let mut out = vec![];
-    loop {
-        match (l.next(), r.next()) {
-            (Some(lv), Some(rv)) => {
-                let add = lv + rv + carry;
-                carry = add / 10;
-                out.push(add % 10);
-            }
-            (Some(lv), None) => {
-                let add = lv + carry;
-                carry = add / 10;
-                out.push(add % 10);
-            }
-            (None, Some(rv)) => {
-                let add = rv + carry;
-                carry = add / 10;
-                out.push(add % 10);
-            }
-            (None, None) => {
-                if carry > 0 {
-                    out.push(carry);
-                }
-                break;
-            }
-        }
-    }
-    out.into_iter().rev().collect()
-}
-
-/// Multiply two lists of digits.
-pub fn mul_digit_lists(lhs: &[u8], rhs: &[u8]) -> Vec<u8> {
-    let mult = rhs.iter().rev().scan(0, |tens, cur| {
-        let mut new: Vec<_> = lhs.iter().rev().map(|d| d * cur).rev().collect();
-        new.extend(vec![0; *tens as usize]);
-        *tens += 1;
-        Some(new)
-    });
-    mult.fold(vec![0_u8], |a, b| add_digit_lists(&a, &b))
-}
-
 /// Generates Collatz sequence of `x`.
 pub fn collatz_sequence(x: u64) -> Vec<u64> {
     (0..1)
@@ -382,16 +334,6 @@ pub fn grid_walk_path_count(w: usize, h: usize) -> u128 {
     }
 
     grid[w][h]
-}
-
-/// Sum of digits of the `n`th-power of `x`.
-pub fn power_digit_sum(x: u64, n: u64) -> u64 {
-    let digits = string_to_list_of_digits(&x.to_string());
-    (0..n)
-        .fold(vec![1_u8], |sum, _| mul_digit_lists(&sum, &digits))
-        .into_iter()
-        .map(|d| d as u64)
-        .sum()
 }
 
 /// Get the number of days in year.
