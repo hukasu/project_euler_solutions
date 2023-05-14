@@ -532,6 +532,11 @@ pub fn uppercase_ascii_string_score(s: &str) -> u64 {
     }
 }
 
+/// Classifications of a number based on the sum of its factors.
+/// 
+/// A `Perfect` number has the sum of its factors equals to itself.
+/// A `Deficient` number has the sum of its factors less than itself.
+/// A `Abundant` number has the sum of its factors greater than itself.
 pub enum NumberFactorSumClass {
     Abundant,
     Perfect,
@@ -539,6 +544,7 @@ pub enum NumberFactorSumClass {
 }
 
 impl NumberFactorSumClass {
+    /// Gets if number is Perfect, Abundant, or Deficient.
     pub fn get_class(x: &u64) -> Self {
         match (get_factors(*x).into_iter().sum::<u64>() + 1).cmp(x) {
             std::cmp::Ordering::Greater => Self::Abundant,
