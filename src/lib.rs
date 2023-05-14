@@ -531,3 +531,19 @@ pub fn uppercase_ascii_string_score(s: &str) -> u64 {
         panic!("The String contains non uppercase ASCII characters.");
     }
 }
+
+pub enum NumberFactorSumClass {
+    Abundant,
+    Perfect,
+    Deficient,
+}
+
+impl NumberFactorSumClass {
+    pub fn get_class(x: &u64) -> Self {
+        match (get_factors(*x).into_iter().sum::<u64>() + 1).cmp(x) {
+            std::cmp::Ordering::Greater => Self::Abundant,
+            std::cmp::Ordering::Equal => Self::Perfect,
+            std::cmp::Ordering::Less => Self::Deficient,
+        }
+    }
+}
