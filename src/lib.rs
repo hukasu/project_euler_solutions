@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::{BTreeSet, HashMap};
 
 mod british_usage;
 pub use british_usage::*;
@@ -533,7 +533,7 @@ pub fn uppercase_ascii_string_score(s: &str) -> u64 {
 }
 
 /// Classifications of a number based on the sum of its factors.
-/// 
+///
 /// A `Perfect` number has the sum of its factors equals to itself.
 /// A `Deficient` number has the sum of its factors less than itself.
 /// A `Abundant` number has the sum of its factors greater than itself.
@@ -552,4 +552,31 @@ impl NumberFactorSumClass {
             std::cmp::Ordering::Less => Self::Deficient,
         }
     }
+}
+
+/// Get the permutantions of all digits up to `n`.
+pub fn permutations_of_digits_up_to_n(n: u64) -> BTreeSet<String> {
+    if n >= 10 {
+        panic!("Only single digits allowed.")
+    }
+    let mut res: BTreeSet<String> = (0..=n).map(|n| n.to_string()).collect();
+    for _ in 0..n {
+        res = res
+            .iter()
+            .flat_map(|v| {
+                let already_in: BTreeSet<char> = v.chars().collect();
+                let missing: BTreeSet<char> = (0..=n)
+                    .map(|n| n.to_string().chars().next().unwrap())
+                    .collect::<BTreeSet<char>>()
+                    .difference(&already_in)
+                    .cloned()
+                    .collect();
+                missing
+                    .into_iter()
+                    .map(|c| [v.clone(), c.to_string()].join(""))
+                    .collect::<Vec<_>>()
+            })
+            .collect();
+    }
+    res
 }
