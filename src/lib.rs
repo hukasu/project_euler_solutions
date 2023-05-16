@@ -9,6 +9,9 @@ pub use british_usage::*;
 mod pyramid;
 pub use pyramid::*;
 
+mod quadratic_formula;
+pub use quadratic_formula::*;
+
 mod unit_fraction;
 pub use unit_fraction::*;
 
