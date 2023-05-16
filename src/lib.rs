@@ -526,19 +526,12 @@ pub fn permutations_of_digits_up_to_n(n: u64) -> BTreeSet<String> {
 /// Preprocesses a string for the Knuth-Morris-Pratt string search algorithm.
 pub fn knuth_morris_pratt_prepocessing(s: &str) -> Vec<isize> {
     let w: Vec<_> = s.chars().collect();
-    println!("{:?}", w);
     let mut t = vec![-1; w.len()];
 
     let mut pos = 1;
     let mut cnd: isize = 0;
 
     while pos < w.len() {
-        println!(
-            "{} == {} {}",
-            w[pos],
-            w[cnd as usize],
-            w[pos] == w[cnd as usize]
-        );
         if w[pos] == w[cnd as usize] {
             t[pos] = t[cnd as usize];
         } else {
