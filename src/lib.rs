@@ -522,3 +522,59 @@ pub fn permutations_of_digits_up_to_n(n: u64) -> BTreeSet<String> {
     }
     res
 }
+
+/// Preprocesses a string for the Knuth-Morris-Pratt string search algorithm.
+pub fn knuth_morris_pratt_prepocessing(s: &str) -> Vec<isize> {
+    let w: Vec<_> = s.chars().collect();
+    println!("{:?}", w);
+    let mut t = vec![-1; w.len()];
+
+    let mut pos = 1;
+    let mut cnd: isize = 0;
+
+    while pos < w.len() {
+        println!(
+            "{} == {} {}",
+            w[pos],
+            w[cnd as usize],
+            w[pos] == w[cnd as usize]
+        );
+        if w[pos] == w[cnd as usize] {
+            t[pos] = t[cnd as usize];
+        } else {
+            t[pos] = cnd;
+            while cnd >= 0 && w[pos] != w[cnd as usize] {
+                cnd = t[cnd as usize];
+            }
+        }
+        pos += 1;
+        cnd += 1;
+    }
+
+    t
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn knuth_morris_pratt_prepocessing_test() {
+        assert_eq!(
+            knuth_morris_pratt_prepocessing("ABCDABD "),
+            vec![-1, 0, 0, 0, -1, 0, 2, 0]
+        );
+        assert_eq!(
+            knuth_morris_pratt_prepocessing("ABACABABC "),
+            vec![-1, 0, -1, 1, -1, 0, -1, 3, 2, 0]
+        );
+        assert_eq!(
+            knuth_morris_pratt_prepocessing("ABACABABA "),
+            vec![-1, 0, -1, 1, -1, 0, -1, 3, -1, 3]
+        );
+        assert_eq!(
+            knuth_morris_pratt_prepocessing("PARTICIPATE IN PARACHUTE "),
+            vec![-1, 0, 0, 0, 0, 0, 0, -1, 0, 2, 0, 0, 0, 0, 0, -1, 0, 0, 3, 0, 0, 0, 0, 0, 0]
+        );
+    }
+}
