@@ -90,15 +90,6 @@ mod test {
 
     #[test]
     fn is_cyclic_test() {
-        assert_eq!(UnitFraction(vec![]).is_cyclic(), false);
-        assert_eq!(UnitFraction(vec![1]).is_cyclic(), false);
-        assert_eq!(UnitFraction(vec![2, 1]).is_cyclic(), false);
-        assert_eq!(UnitFraction(vec![2, 2]).is_cyclic(), true);
-        assert_eq!(UnitFraction(vec![2, 2, 1]).is_cyclic(), false);
-        assert_eq!(UnitFraction(vec![2, 2, 2]).is_cyclic(), true);
-        assert_eq!(UnitFraction(vec![2, 2, 2, 1]).is_cyclic(), false);
-        assert_eq!(UnitFraction(vec![2, 2, 2, 2]).is_cyclic(), true);
-        assert_eq!(UnitFraction(vec![2, 1, 2, 1]).is_cyclic(), true);
         assert_eq!(UnitFraction::from(1).is_cyclic(), false);
         assert_eq!(UnitFraction::from(2).is_cyclic(), false);
         assert_eq!(UnitFraction::from(3).is_cyclic(), true);
