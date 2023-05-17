@@ -3,7 +3,7 @@ use std::{
     ops::{Add, Mul},
 };
 
-#[derive(Clone, PartialEq)]
+#[derive(Clone, PartialEq, PartialOrd, Eq, Ord)]
 pub struct BigUInt(Vec<u8>);
 
 impl BigUInt {
