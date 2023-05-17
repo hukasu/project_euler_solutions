@@ -1,4 +1,7 @@
-use std::collections::{BTreeSet, HashMap};
+use std::{
+    collections::{BTreeSet, HashMap},
+    ops::Add,
+};
 
 mod big_uint;
 pub use big_uint::*;
@@ -527,6 +530,28 @@ pub fn permutations_of_digits_up_to_n(n: u64) -> BTreeSet<String> {
             .collect();
     }
     res
+}
+
+/// Get the sum of diagonals on a spiral of side `n`.
+///
+/// # Panic
+/// Panics on even `n`.
+pub fn spiral_diagonals_sum(n: u64) -> u64 {
+    if n % 2 == 0 {
+        panic!("`n` must be odd.")
+    };
+    let shells_dimensions = (1_u64..n).step_by(2);
+    let shell_vertices = |d: u64| {
+        (d.pow(2)..=(d + 2).pow(2))
+            .step_by((d + 1) as usize)
+            .skip(1)
+            .take(4)
+            .collect::<Vec<_>>()
+    };
+    shells_dimensions
+        .flat_map(shell_vertices)
+        .sum::<u64>()
+        .add(1)
 }
 
 /// Preprocesses a string for the Knuth-Morris-Pratt string search algorithm.
