@@ -554,6 +554,23 @@ pub fn spiral_diagonals_sum(n: u64) -> u64 {
         .add(1)
 }
 
+/// Get all circular shifts of a number `n`.
+pub fn circular_shifts_of_a_number(n: u64) -> Vec<u64> {
+    let mut t = n.to_string();
+    let mut res = vec![n];
+    loop {
+        let head = t.remove(0);
+        t.push(head);
+        let nn = t.parse::<u64>().unwrap();
+        if nn == n {
+            break;
+        } else {
+            res.push(nn);
+        }
+    }
+    res
+}
+
 /// Preprocesses a string for the Knuth-Morris-Pratt string search algorithm.
 pub fn knuth_morris_pratt_prepocessing(s: &str) -> Vec<isize> {
     let w: Vec<_> = s.chars().collect();
