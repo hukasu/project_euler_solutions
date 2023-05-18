@@ -7,7 +7,7 @@ fn main() {
         let b_range = (a - dist_to_max..=999).rev();
         for (l, r) in a_range.zip(b_range) {
             let m = l * r;
-            if is_palindrome(m) {
+            if is_palindrome(&m.to_string()) {
                 println!("{l} * {r} = {m}");
                 break 'outer;
             }
@@ -21,10 +21,10 @@ mod test {
 
     #[test]
     fn palindrome_test() {
-        assert!(is_palindrome(9));
-        assert!(is_palindrome(99));
-        assert!(is_palindrome(909));
-        assert!(is_palindrome(9009));
-        assert!(is_palindrome(90109));
+        assert!(is_palindrome("9"));
+        assert!(is_palindrome("99"));
+        assert!(is_palindrome("909"));
+        assert!(is_palindrome("9009"));
+        assert!(is_palindrome("90109"));
     }
 }

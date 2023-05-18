@@ -79,8 +79,7 @@ pub fn is_prime(f: u64) -> bool {
 }
 
 /// Checks if number is palindrome.
-pub fn is_palindrome(x: u64) -> bool {
-    let s = x.to_string();
+pub fn is_palindrome(s: &str) -> bool {
     let s2: String = s.chars().rev().collect();
     s == s2
 }
