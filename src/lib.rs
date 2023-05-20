@@ -75,7 +75,11 @@ pub fn get_prime_factors_frequencies(x: u64) -> HashMap<u64, u64> {
 
 /// Checks if a number is prime
 pub fn is_prime(f: u64) -> bool {
-    get_prime_factors(f).is_empty()
+    if f <= 1 {
+        false
+    } else {
+        get_prime_factors(f).is_empty()
+    }
 }
 
 /// Checks if number is palindrome.
@@ -568,6 +572,46 @@ pub fn circular_shifts_of_a_number(n: u64) -> Vec<u64> {
         }
     }
     res
+}
+
+/// Check if prime is left-to-right truncable.
+pub fn left_truncable_prime(x: u64) -> bool {
+    (0..1)
+        .cycle()
+        .scan(1, |p, _| {
+            if x % 10_u64.pow(*p) == x {
+                None
+            } else {
+                *p += 1;
+                Some(x % 10_u64.pow(*p - 1))
+            }
+        })
+        .all(is_prime)
+}
+
+/// Check if prime is left-to-right truncable.
+pub fn right_truncable_prime(x: u64) -> bool {
+    (0..1)
+        .cycle()
+        .scan(x, |x, _| {
+            if *x / 10 > 0 {
+                *x /= 10;
+                Some(*x)
+            } else {
+                None
+            }
+        })
+        .all(is_prime)
+}
+
+/// Check if prime is truncable
+pub fn truncable_prime(x: u64) -> bool {
+    static SINGLE_DIGIT: [u64; 4] = [2, 3, 5, 7];
+    if is_prime(x) && !SINGLE_DIGIT.contains(&x) {
+        left_truncable_prime(x) && right_truncable_prime(x)
+    } else {
+        false
+    }
 }
 
 /// Preprocesses a string for the Knuth-Morris-Pratt string search algorithm.
