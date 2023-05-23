@@ -614,6 +614,21 @@ pub fn truncable_prime(x: u64) -> bool {
     }
 }
 
+/// Check if list of numbers is pandigital.
+///
+/// A pandigital number is a number that has all digits from 1 through 9 exactly once.
+pub fn pandigital_numbers(ns: &[u64]) -> bool {
+    static ONE_THROUGH_NINE: [char; 9] = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    let mut d = ns
+        .iter()
+        .map(u64::to_string)
+        .collect::<String>()
+        .chars()
+        .collect::<Vec<_>>();
+    d.sort();
+    d.eq(&ONE_THROUGH_NINE)
+}
+
 /// Preprocesses a string for the Knuth-Morris-Pratt string search algorithm.
 pub fn knuth_morris_pratt_prepocessing(s: &str) -> Vec<isize> {
     let w: Vec<_> = s.chars().collect();
