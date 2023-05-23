@@ -629,6 +629,28 @@ pub fn pandigital_numbers(ns: &[u64]) -> bool {
     d.eq(&ONE_THROUGH_NINE)
 }
 
+/// Get all solutions for a right triangle of integer perimeter `p`.
+pub fn right_triangles_of_perimeter_p(p: u64) -> Vec<(u64, u64, u64)> {
+    let mut r = vec![];
+
+    let mut a = p as f64;
+    let mut b = 1.;
+
+    while a >= b {
+        let c = (a.powf(2.) + b.powf(2.)).sqrt();
+        match (a + b + c).total_cmp(&(p as f64)) {
+            std::cmp::Ordering::Less => b += 1.,
+            std::cmp::Ordering::Equal => {
+                r.push((a as u64, b as u64, c as u64));
+                b += 1.;
+            }
+            std::cmp::Ordering::Greater => a -= 1.,
+        }
+    }
+
+    r
+}
+
 /// Preprocesses a string for the Knuth-Morris-Pratt string search algorithm.
 pub fn knuth_morris_pratt_prepocessing(s: &str) -> Vec<isize> {
     let w: Vec<_> = s.chars().collect();
