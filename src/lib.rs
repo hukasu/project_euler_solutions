@@ -283,6 +283,14 @@ pub fn grid_diagonal_left_product<const N: usize>(
         .map(|v| v.into_iter().product())
 }
 
+/// Check if `n` is a triangle number.
+pub fn is_triangle_number(n: u64) -> bool {
+    let delta = 1 + 8 * n;
+    let x1 = (-1. + (delta as f64).sqrt()) / 2.;
+    let x2 = (-1. - (delta as f64).sqrt()) / 2.;
+    x1.fract() == 0.0 && x2.fract() == 0.0
+}
+
 /// Get the `n`th triagle number
 pub fn nth_triangle_numbers(n: u64) -> u64 {
     n * (n + 1) / 2
