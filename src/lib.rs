@@ -283,21 +283,16 @@ pub fn grid_diagonal_left_product<const N: usize>(
         .map(|v| v.into_iter().product())
 }
 
-/// Get the first Triagle number with N factors.
+/// Get the `n`th triagle number
+pub fn nth_triangle_numbers(n: u64) -> u64 {
+    n * (n + 1) / 2
+}
+
+/// Get the first Triangle number with N factors.
 pub fn first_triangle_number_with_over_n_factors(factor_count: u64) -> u64 {
-    let mut cont = true;
-    (1_u64..=factor_count.pow(2))
-        .scan(0, |prev, cur| {
-            if cont {
-                let s = *prev + cur;
-                *prev = s;
-                cont = get_factors(s).len().lt(&(factor_count as usize - 2));
-                Some(s)
-            } else {
-                None
-            }
-        })
-        .max()
+    (0..=factor_count.pow(2))
+        .map(nth_triangle_numbers)
+        .find(|t| get_factors(*t).len() as u64 >= (factor_count - 2))
         .unwrap_or(0)
 }
 
