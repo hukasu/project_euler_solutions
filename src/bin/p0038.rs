@@ -7,7 +7,7 @@ fn main() {
             let slices = (1..=9).map(|i| &products[..i]).collect::<Vec<_>>();
             slices
                 .iter()
-                .find(|slc| pandigital_numbers(slc))
+                .find(|slc| pandigital_numbers(slc, false))
                 .map(|pan| {
                     (
                         i,

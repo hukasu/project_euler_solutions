@@ -621,19 +621,25 @@ pub fn truncable_prime(x: u64) -> bool {
 ///
 /// A pandigital number is a number that has all digits from 1 through `n` exactly once, where `n` is the
 /// length of characters of the string from the concatenation of the numbers in `ns`.
-pub fn pandigital_numbers(ns: &[u64]) -> bool {
+pub fn pandigital_numbers(ns: &[u64], start_at_zero: bool) -> bool {
+    static ZERO_THROUGH_NINE: [char; 10] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     static ONE_THROUGH_NINE: [char; 9] = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    let cmp = if start_at_zero {
+        ZERO_THROUGH_NINE.as_slice()
+    } else {
+        ONE_THROUGH_NINE.as_slice()
+    };
     let mut d = ns
         .iter()
         .map(u64::to_string)
         .collect::<String>()
         .chars()
         .collect::<Vec<_>>();
-    if d.len() > ONE_THROUGH_NINE.len() {
+    if d.len() > cmp.len() {
         false
     } else {
         d.sort();
-        d.eq(&ONE_THROUGH_NINE[..d.len()])
+        d.eq(&cmp[..d.len()])
     }
 }
 
