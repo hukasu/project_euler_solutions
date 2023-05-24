@@ -616,7 +616,8 @@ pub fn truncable_prime(x: u64) -> bool {
 
 /// Check if list of numbers is pandigital.
 ///
-/// A pandigital number is a number that has all digits from 1 through 9 exactly once.
+/// A pandigital number is a number that has all digits from 1 through `n` exactly once, where `n` is the
+/// length of characters of the string from the concatenation of the numbers in `ns`.
 pub fn pandigital_numbers(ns: &[u64]) -> bool {
     static ONE_THROUGH_NINE: [char; 9] = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
     let mut d = ns
@@ -625,8 +626,12 @@ pub fn pandigital_numbers(ns: &[u64]) -> bool {
         .collect::<String>()
         .chars()
         .collect::<Vec<_>>();
-    d.sort();
-    d.eq(&ONE_THROUGH_NINE)
+    if d.len() > ONE_THROUGH_NINE.len() {
+        false
+    } else {
+        d.sort();
+        d.eq(&ONE_THROUGH_NINE[..d.len()])
+    }
 }
 
 /// Get all solutions for a right triangle of integer perimeter `p`.
