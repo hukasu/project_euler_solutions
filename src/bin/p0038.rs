@@ -11,8 +11,7 @@ fn main() {
                 .map(|pan| {
                     (
                         i,
-                        pan
-                            .iter()
+                        pan.iter()
                             .map(u64::to_string)
                             .collect::<String>()
                             .parse::<u64>()
