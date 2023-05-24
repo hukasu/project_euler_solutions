@@ -7,11 +7,11 @@ fn main() {
             let slices = (1..=9).map(|i| &products[..i]).collect::<Vec<_>>();
             slices
                 .iter()
-                .position(|slc| pandigital_numbers(slc))
+                .find(|slc| pandigital_numbers(slc))
                 .map(|pan| {
                     (
                         i,
-                        slices[pan]
+                        pan
                             .iter()
                             .map(u64::to_string)
                             .collect::<String>()
