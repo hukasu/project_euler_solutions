@@ -665,6 +665,11 @@ pub fn right_triangles_of_perimeter_p(p: u64) -> Vec<(u64, u64, u64)> {
     r
 }
 
+/// Get the `n`th pentagon numbers.
+pub fn pentagon_number(n: u64) -> u64 {
+    n * (3 * n - 1) / 2
+}
+
 /// Preprocesses a string for the Knuth-Morris-Pratt string search algorithm.
 pub fn knuth_morris_pratt_prepocessing(s: &str) -> Vec<isize> {
     let w: Vec<_> = s.chars().collect();
