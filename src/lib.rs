@@ -670,6 +670,11 @@ pub fn pentagon_number(n: u64) -> u64 {
     n * (3 * n - 1) / 2
 }
 
+/// Get the `n`th pentagon numbers.
+pub fn hexagonal_number(n: u64) -> u64 {
+    n * (2 * n - 1)
+}
+
 /// Preprocesses a string for the Knuth-Morris-Pratt string search algorithm.
 pub fn knuth_morris_pratt_prepocessing(s: &str) -> Vec<isize> {
     let w: Vec<_> = s.chars().collect();
