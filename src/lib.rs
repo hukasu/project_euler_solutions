@@ -697,6 +697,11 @@ pub fn sequencial_distinct_prime_factors(window: u64, factor: u64, stop: u64) ->
         .map(|d| d - (window - 1))
 }
 
+/// Calculate the power modulus.
+pub fn power_modulus(x: u64, pow: u64, modulus: u64) -> u64 {
+    (0..pow).fold(1, |prod, _| (prod * x) % modulus)
+}
+
 /// Preprocesses a string for the Knuth-Morris-Pratt string search algorithm.
 pub fn knuth_morris_pratt_prepocessing(s: &str) -> Vec<isize> {
     let w: Vec<_> = s.chars().collect();
