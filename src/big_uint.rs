@@ -1,5 +1,6 @@
 use std::{
     fmt::Debug,
+    iter::Sum,
     ops::{Add, Mul},
 };
 
@@ -98,5 +99,11 @@ impl Mul<BigUInt> for BigUInt {
             Some(new)
         });
         mult.fold(BigUInt::default(), |a, b| a + Self(b))
+    }
+}
+
+impl Sum for BigUInt {
+    fn sum<I: Iterator<Item = Self>>(iter: I) -> Self {
+        iter.fold(Self::default(), |sum, big| sum + big)
     }
 }
