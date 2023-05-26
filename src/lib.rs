@@ -47,7 +47,7 @@ pub fn get_prime_factors(x: u64) -> Vec<u64> {
     if x > 2 {
         [2_u64]
             .into_iter()
-            .chain((3..=(x as f64).sqrt().ceil() as u64).step_by(2))
+            .chain((3..=x.div_euclid(2)).step_by(2))
             .filter(|f| is_prime_factor(x, *f))
             .collect()
     } else {
@@ -673,6 +673,28 @@ pub fn pentagon_number(n: u64) -> u64 {
 /// Get the `n`th pentagon numbers.
 pub fn hexagonal_number(n: u64) -> u64 {
     n * (2 * n - 1)
+}
+
+/// Find sequencial numbers of length `window` that all have `factor` distinct prime factors.
+///
+/// # Return
+/// Returns the first number in the sequency
+pub fn sequencial_distinct_prime_factors(window: u64, factor: u64, stop: u64) -> Option<u64> {
+    (1..stop)
+        .map(|n| (n, get_prime_factors(n).len() as u64))
+        .scan(0, |count, cur| {
+            if count == &window {
+                None
+            } else if cur.1 == factor {
+                *count += 1;
+                Some(cur.0)
+            } else {
+                *count = 0;
+                Some(cur.0)
+            }
+        })
+        .last()
+        .map(|d| d - (window - 1))
 }
 
 /// Preprocesses a string for the Knuth-Morris-Pratt string search algorithm.
