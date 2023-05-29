@@ -702,6 +702,22 @@ pub fn power_modulus(x: u64, pow: u64, modulus: u64) -> u64 {
     (0..pow).fold(1, |prod, _| (prod * x) % modulus)
 }
 
+/// Generates a list of the sums of consecutives primes up to `threshold`.
+///
+/// The sequency with `skip` at `0` have the sums of \[2, 3, 5, ...\], `skip` at `1` has the sums
+/// of \[3, 5, 7, ...\], and so on.
+pub fn sum_of_consecutive_primes(threshold: u64, skip: usize) -> Vec<u64> {
+    let primes = primes_up_to(threshold);
+    primes
+        .iter()
+        .skip(skip)
+        .scan(0_u64, |sum, cur| {
+            *sum += cur;
+            Some(*sum)
+        })
+        .collect()
+}
+
 /// Preprocesses a string for the Knuth-Morris-Pratt string search algorithm.
 pub fn knuth_morris_pratt_prepocessing(s: &str) -> Vec<isize> {
     let w: Vec<_> = s.chars().collect();
