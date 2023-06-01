@@ -136,29 +136,80 @@ pub fn nth_prime(n: u64) -> u64 {
 }
 
 /// Get all primes up to `n`.
-pub fn primes_up_to(x: u64) -> Vec<u64> {
-    (0..1)
-        .cycle()
-        .scan(1_u64, |prev, _| match *prev {
-            1 => {
-                *prev = 2;
-                Some(2)
-            }
-            2 => {
-                *prev = 3;
-                Some(3)
-            }
-            mut next => loop {
-                next += 2;
-                if next.gt(&x) {
-                    return None;
-                } else if is_prime(next) {
-                    *prev = next;
-                    break Some(next);
-                }
-            },
+pub fn primes_up_to(limit: u64) -> BTreeSet<u64> {
+    const CONDITION_1: [u64; 8] = [1, 13, 17, 29, 37, 41, 49, 53];
+    const CONDITION_2: [u64; 4] = [7, 19, 31, 43];
+    const CONDITION_3: [u64; 4] = [11, 23, 47, 59];
+
+    let sieve = vec![1, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 49, 53, 59];
+    let mut is_prime = vec![false; limit as usize + 1];
+
+    // Condition 1
+    (1..limit)
+        // Cartesian product of x E {1, 2, ...} and y E {1, 3, ...}
+        .flat_map(|x| (1..limit).step_by(2).map(|y| (x, y)).collect::<Vec<_>>())
+        // Calculate n <- 4 * x^2 + y^2
+        .map(|(x, y)| 4 * x.pow(2) + y.pow(2))
+        .filter(|n| n <= &limit)
+        .filter(|n| CONDITION_1.binary_search(&(n % 60)).is_ok())
+        .for_each(|n| is_prime[n as usize] = !is_prime[n as usize]);
+
+    // Condition 2
+    (1..limit)
+        .step_by(2)
+        // Cartesian product of x E {1, 3, ...} and y E {2, 4, ...}
+        .flat_map(|x| (2..limit).step_by(2).map(|y| (x, y)).collect::<Vec<_>>())
+        // Calculate n <- 3 * x^2 + y^2
+        .map(|(x, y)| 3 * x.pow(2) + y.pow(2))
+        .filter(|n| n <= &limit)
+        .filter(|n| CONDITION_2.binary_search(&(n % 60)).is_ok())
+        .for_each(|n| is_prime[n as usize] = !is_prime[n as usize]);
+
+    // Condition 3
+    (2..limit)
+        // Cartesian product of x E {2, 3, ...} and y E {x - 1, x - 3, ..., 1}
+        .flat_map(|x| {
+            (1..limit)
+                .step_by(2)
+                .scan((), |_, sub| if sub > x { None } else { Some((x, x - sub)) })
+                .collect::<Vec<_>>()
         })
-        .collect()
+        // Calculate n <- 3 * x^2 - y^2
+        .map(|(x, y)| 3 * x.pow(2) - y.pow(2))
+        .filter(|n| n <= &limit)
+        .filter(|n| CONDITION_3.binary_search(&(n % 60)).is_ok())
+        .for_each(|n| is_prime[n as usize] ^= true);
+
+    // Composites
+    (0..limit)
+        // Cartesian product of w E {0, 1, ...} and x E `sieve`
+        .flat_map(|w| sieve.iter().map(|x| (w, *x)).collect::<Vec<_>>())
+        // Calculate n <- 60 * w + x
+        .map(|(w, x)| 60 * w + x)
+        .filter(|n| n >= &7)
+        .filter(|n| n.pow(2) <= limit)
+        .for_each(|n| {
+            if is_prime[n as usize] {
+                (0..limit)
+                    // Cartesian product of w E {0, 1, ...} and x E `sieve`
+                    .flat_map(|w| sieve.iter().map(|x| (w, *x)).collect::<Vec<_>>())
+                    // Calculate c <- n^2 * (60 * w + x)
+                    .map(|(w, x)| n.pow(2) * (60 * w + x))
+                    .filter(|c| c <= &limit)
+                    .for_each(|c| is_prime[c as usize] = false)
+            }
+        });
+
+    BTreeSet::from_iter(
+        [2, 3, 5].into_iter().chain(
+            (0..limit)
+                .flat_map(|w| sieve.iter().map(|x| (w, *x)).collect::<Vec<_>>())
+                .map(|(w, x)| 60 * w + x)
+                .filter(|n| n >= &7)
+                .filter(|n| n <= &limit)
+                .filter(|n| is_prime[*n as usize]),
+        ),
+    )
 }
 
 /// Get the biggest product
