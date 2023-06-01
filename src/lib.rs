@@ -141,13 +141,20 @@ pub fn primes_up_to(limit: u64) -> BTreeSet<u64> {
     const CONDITION_2: [u64; 4] = [7, 19, 31, 43];
     const CONDITION_3: [u64; 4] = [11, 23, 47, 59];
 
+    let sqrt_limit = (limit as f64).sqrt() as u64 + 1;
+
     let sieve = vec![1, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 49, 53, 59];
     let mut is_prime = vec![false; limit as usize + 1];
 
     // Condition 1
-    (1..limit)
+    (1..sqrt_limit)
         // Cartesian product of x E {1, 2, ...} and y E {1, 3, ...}
-        .flat_map(|x| (1..limit).step_by(2).map(|y| (x, y)).collect::<Vec<_>>())
+        .flat_map(|x| {
+            (1..sqrt_limit)
+                .step_by(2)
+                .map(|y| (x, y))
+                .collect::<Vec<_>>()
+        })
         // Calculate n <- 4 * x^2 + y^2
         .map(|(x, y)| 4 * x.pow(2) + y.pow(2))
         .filter(|n| n <= &limit)
@@ -155,10 +162,15 @@ pub fn primes_up_to(limit: u64) -> BTreeSet<u64> {
         .for_each(|n| is_prime[n as usize] = !is_prime[n as usize]);
 
     // Condition 2
-    (1..limit)
+    (1..sqrt_limit)
         .step_by(2)
         // Cartesian product of x E {1, 3, ...} and y E {2, 4, ...}
-        .flat_map(|x| (2..limit).step_by(2).map(|y| (x, y)).collect::<Vec<_>>())
+        .flat_map(|x| {
+            (2..sqrt_limit)
+                .step_by(2)
+                .map(|y| (x, y))
+                .collect::<Vec<_>>()
+        })
         // Calculate n <- 3 * x^2 + y^2
         .map(|(x, y)| 3 * x.pow(2) + y.pow(2))
         .filter(|n| n <= &limit)
@@ -166,10 +178,10 @@ pub fn primes_up_to(limit: u64) -> BTreeSet<u64> {
         .for_each(|n| is_prime[n as usize] = !is_prime[n as usize]);
 
     // Condition 3
-    (2..limit)
+    (2..sqrt_limit)
         // Cartesian product of x E {2, 3, ...} and y E {x - 1, x - 3, ..., 1}
         .flat_map(|x| {
-            (1..limit)
+            (1..sqrt_limit)
                 .step_by(2)
                 .scan((), |_, sub| if sub > x { None } else { Some((x, x - sub)) })
                 .collect::<Vec<_>>()
@@ -181,7 +193,7 @@ pub fn primes_up_to(limit: u64) -> BTreeSet<u64> {
         .for_each(|n| is_prime[n as usize] ^= true);
 
     // Composites
-    (0..limit)
+    (0..sqrt_limit)
         // Cartesian product of w E {0, 1, ...} and x E `sieve`
         .flat_map(|w| sieve.iter().map(|x| (w, *x)).collect::<Vec<_>>())
         // Calculate n <- 60 * w + x
@@ -190,7 +202,7 @@ pub fn primes_up_to(limit: u64) -> BTreeSet<u64> {
         .filter(|n| n.pow(2) <= limit)
         .for_each(|n| {
             if is_prime[n as usize] {
-                (0..limit)
+                (0..sqrt_limit)
                     // Cartesian product of w E {0, 1, ...} and x E `sieve`
                     .flat_map(|w| sieve.iter().map(|x| (w, *x)).collect::<Vec<_>>())
                     // Calculate c <- n^2 * (60 * w + x)
@@ -767,6 +779,44 @@ pub fn sum_of_consecutive_primes(threshold: u64, skip: usize) -> Vec<u64> {
             Some(*sum)
         })
         .collect()
+}
+
+/// Replace some digits of a number for another digit
+///
+/// ```
+/// use project_euler::replace_digits;
+/// assert_eq!(replace_digits(54321, 1001, 6), 56326);
+/// assert_eq!(replace_digits(5432154321, 100101001, 7), 5732757327);
+/// ```
+pub fn replace_digits(n: u64, mask: u64, digit: u8) -> u64 {
+    if digit >= 10 {
+        panic!("Must be single digit.")
+    };
+    let str = n
+        .to_string()
+        .chars()
+        .map(|c| c.to_digit(10).unwrap())
+        .collect::<Vec<_>>();
+    let mut mask = mask
+        .to_string()
+        .chars()
+        .map(|c| c.to_digit(10).unwrap())
+        .collect::<Vec<_>>();
+    while str.len() > mask.len() {
+        mask.insert(0, 0);
+    }
+    str.iter()
+        .zip(mask)
+        .map(|(s, m)| {
+            if m == 1 {
+                digit.to_string()
+            } else {
+                s.to_string()
+            }
+        })
+        .collect::<String>()
+        .parse::<u64>()
+        .unwrap()
 }
 
 /// Preprocesses a string for the Knuth-Morris-Pratt string search algorithm.
