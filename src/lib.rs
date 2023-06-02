@@ -824,6 +824,30 @@ pub fn replace_digits(n: u64, mask: u64, digit: u8) -> u64 {
         .unwrap()
 }
 
+/// Get greatest common divisor.
+pub fn greatest_common_divisor(lhs: &u128, rhs: &u128) -> u128 {
+    if rhs == &0 {
+        *lhs
+    } else {
+        greatest_common_divisor(rhs, &(lhs % rhs))
+    }
+}
+
+/// Binomial distribution.
+pub fn binomail_distribution(n: &u64, r: &u64) -> u128 {
+    let nume = (*r as u128 + 1)..=(*n as u128);
+    let deno = 1..=((n - r) as u128);
+    let frac = nume
+        .zip(deno)
+        .fold((1_u128, 1_u128), |(fracnum, fracdeno), (n, d)| {
+            let factor = greatest_common_divisor(&n, &d);
+            let next = (fracnum * (n / factor), fracdeno * (d / factor));
+            let factor = greatest_common_divisor(&next.0, &next.1);
+            (next.0 / factor, next.1 / factor)
+        });
+    frac.0 / frac.1
+}
+
 /// Preprocesses a string for the Knuth-Morris-Pratt string search algorithm.
 pub fn knuth_morris_pratt_prepocessing(s: &str) -> Vec<isize> {
     let w: Vec<_> = s.chars().collect();
