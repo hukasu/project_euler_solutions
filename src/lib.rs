@@ -680,6 +680,18 @@ pub fn truncable_prime(x: u64) -> bool {
     }
 }
 
+/// Collect digits present on number into a sorted list.
+pub fn number_to_sorted_list_of_digits(n: &u64) -> Vec<char> {
+    let mut d = n.to_string().chars().collect::<Vec<_>>();
+    d.sort();
+    d
+}
+
+/// Collect digits present on number into a set.
+pub fn number_to_set_of_digits(n: &u64) -> BTreeSet<char> {
+    n.to_string().chars().collect::<BTreeSet<_>>()
+}
+
 /// Check if list of numbers is pandigital.
 ///
 /// A pandigital number is a number that has all digits from 1 through `n` exactly once, where `n` is the
@@ -692,18 +704,20 @@ pub fn pandigital_numbers(ns: &[u64], start_at_zero: bool) -> bool {
     } else {
         ONE_THROUGH_NINE.as_slice()
     };
-    let mut d = ns
+    let d = ns
         .iter()
-        .map(u64::to_string)
-        .collect::<String>()
-        .chars()
+        .flat_map(number_to_sorted_list_of_digits)
         .collect::<Vec<_>>();
     if d.len() > cmp.len() {
         false
     } else {
-        d.sort();
         d.eq(&cmp[..d.len()])
     }
+}
+
+/// Compare if 2 numbers have the same digits.
+pub fn are_permutations(lhs: &u64, rhs: &u64) -> bool {
+    number_to_sorted_list_of_digits(lhs).eq(&number_to_sorted_list_of_digits(rhs))
 }
 
 /// Get all solutions for a right triangle of integer perimeter `p`.
