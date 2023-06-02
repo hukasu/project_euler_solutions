@@ -28,6 +28,11 @@ pub fn is_factor(x: u64, f: u64) -> bool {
     x % f == 0
 }
 
+/// Checks if a number is prime
+pub fn is_prime(f: u64) -> bool {
+    primes_up_to(f).contains(&f)
+}
+
 /// Checks if `f` is a prime factor of `x`.
 pub fn is_prime_factor(x: u64, f: u64) -> bool {
     is_factor(x, f) && is_prime(f)
@@ -42,17 +47,12 @@ pub fn get_factors(x: u64) -> Vec<u64> {
     }
 }
 
-/// Returns the prime factors of a number, excluding 1 and itself.
+/// Returns the prime factors of a number.
 pub fn get_prime_factors(x: u64) -> Vec<u64> {
-    if x > 2 {
-        [2_u64]
-            .into_iter()
-            .chain((3..=x.div_euclid(2)).step_by(2))
-            .filter(|f| is_prime_factor(x, *f))
-            .collect()
-    } else {
-        vec![]
-    }
+    primes_up_to(x)
+        .into_iter()
+        .filter(|f| is_prime_factor(x, *f))
+        .collect()
 }
 
 /// Returns a map of prime factors and the amount of times the number can be factored by it
@@ -71,15 +71,6 @@ pub fn get_prime_factors_frequencies(x: u64) -> HashMap<u64, u64> {
             (nx, nm)
         })
         .1
-}
-
-/// Checks if a number is prime
-pub fn is_prime(f: u64) -> bool {
-    if f <= 1 {
-        false
-    } else {
-        get_prime_factors(f).is_empty()
-    }
 }
 
 /// Checks if number is palindrome.
