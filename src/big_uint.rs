@@ -1,7 +1,7 @@
 use std::{
     fmt::Debug,
     iter::Sum,
-    ops::{Add, Mul},
+    ops::{Add, AddAssign, Mul},
 };
 
 #[derive(Clone, PartialEq, PartialOrd, Eq, Ord)]
@@ -18,6 +18,18 @@ impl BigUInt {
 
     pub fn sum_of_digits(&self) -> u64 {
         self.0.iter().cloned().map(u64::from).sum()
+    }
+
+    pub fn reverse(self) -> Self {
+        let mut rev: Vec<_> = self.0.iter().cloned().rev().collect();
+        while rev.first() == Some(&0) {
+            rev.remove(0);
+        }
+        Self(rev)
+    }
+
+    pub fn is_palindrome(&self) -> bool {
+        self.0.iter().rev().eq(self.0.iter())
     }
 }
 
@@ -50,10 +62,10 @@ impl From<u64> for BigUInt {
     }
 }
 
-impl Add<BigUInt> for BigUInt {
+impl Add<&BigUInt> for BigUInt {
     type Output = Self;
 
-    fn add(self, rhs: BigUInt) -> Self::Output {
+    fn add(self, rhs: &BigUInt) -> Self::Output {
         let mut l = self.0.iter().rev();
         let mut r = rhs.0.iter().rev();
 
@@ -88,6 +100,20 @@ impl Add<BigUInt> for BigUInt {
     }
 }
 
+impl Add<BigUInt> for BigUInt {
+    type Output = Self;
+
+    fn add(self, rhs: BigUInt) -> Self::Output {
+        self + &rhs
+    }
+}
+
+impl AddAssign<BigUInt> for BigUInt {
+    fn add_assign(&mut self, rhs: BigUInt) {
+        *self = rhs + (self as &Self);
+    }
+}
+
 impl Mul<BigUInt> for BigUInt {
     type Output = Self;
 
@@ -105,5 +131,20 @@ impl Mul<BigUInt> for BigUInt {
 impl Sum for BigUInt {
     fn sum<I: Iterator<Item = Self>>(iter: I) -> Self {
         iter.fold(Self::default(), |sum, big| sum + big)
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn palindrome_test() {
+        assert!(BigUInt::from("9").is_palindrome());
+        assert!(BigUInt::from("99").is_palindrome());
+        assert!(BigUInt::from("909").is_palindrome());
+        assert!(BigUInt::from("9009").is_palindrome());
+        assert!(BigUInt::from("90109").is_palindrome());
+        assert!(!BigUInt::from("91109").is_palindrome());
     }
 }

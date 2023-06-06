@@ -851,6 +851,16 @@ pub fn binomail_distribution(n: &u64, r: &u64) -> u128 {
     frac.0 / frac.1
 }
 
+/// Verifies if a number is a Lychrel Numbers.
+pub fn is_lychrel_number(n: &u64, limit: u64) -> bool {
+    !(0..limit)
+        .scan(BigUInt::from(*n), |p, _| {
+            *p += p.clone().reverse();
+            Some(p.clone())
+        })
+        .any(|n| n.is_palindrome())
+}
+
 /// Preprocesses a string for the Knuth-Morris-Pratt string search algorithm.
 pub fn knuth_morris_pratt_prepocessing(s: &str) -> Vec<isize> {
     let w: Vec<_> = s.chars().collect();
