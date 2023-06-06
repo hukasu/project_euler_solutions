@@ -9,6 +9,9 @@ pub use big_uint::*;
 mod british_usage;
 pub use british_usage::*;
 
+mod poker;
+pub use poker::*;
+
 mod pyramid;
 pub use pyramid::*;
 
