@@ -34,7 +34,14 @@ pub fn is_factor(x: u64, f: u64) -> bool {
 
 /// Checks if a number is prime
 pub fn is_prime(f: u64) -> bool {
-    primes_up_to(f).contains(&f)
+    match f {
+        2 | 3 => true,
+        a if a <= 1 || (a % 2 == 0) || (a % 3 == 0) => false,
+        a => !(5..a)
+            .step_by(6)
+            .filter(|i| i * i <= a)
+            .any(|i| a % i == 0 || a % (i + 2) == 0),
+    }
 }
 
 /// Checks if `f` is a prime factor of `x`.
