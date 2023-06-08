@@ -10,6 +10,6 @@ mod test {
 
     #[test]
     fn spiral_diagonals_sum_test() {
-        assert_eq!(spiral_diagonals_sum(5), 101);
+        assert_eq!(spiral_diagonals_sum(5), Ok(101));
     }
 }

@@ -1,6 +1,7 @@
 use std::{
     collections::{BTreeSet, HashMap},
-    ops::Add,
+    iter::{FlatMap, Skip, StepBy, Take},
+    ops::{Add, Range, RangeInclusive},
 };
 
 mod big_uint;
@@ -595,26 +596,31 @@ pub fn permutations_of_digits_up_to_n(n: u64) -> BTreeSet<String> {
     res
 }
 
-/// Get the sum of diagonals on a spiral of side `n`.
-///
-/// # Panic
-/// Panics on even `n`.
-pub fn spiral_diagonals_sum(n: u64) -> u64 {
+type Spiral = FlatMap<
+    StepBy<Range<u64>>,
+    Take<Skip<StepBy<RangeInclusive<u64>>>>,
+    Box<dyn FnMut(u64) -> Take<Skip<StepBy<RangeInclusive<u64>>>>>,
+>;
+
+/// Create a Spiral generator.
+pub fn vertices_of_number_spiral(n: u64) -> Result<Spiral, String> {
     if n % 2 == 0 {
-        panic!("`n` must be odd.")
-    };
-    let shells_dimensions = (1_u64..n).step_by(2);
-    let shell_vertices = |d: u64| {
-        (d.pow(2)..=(d + 2).pow(2))
-            .step_by((d + 1) as usize)
-            .skip(1)
-            .take(4)
-            .collect::<Vec<_>>()
-    };
-    shells_dimensions
-        .flat_map(shell_vertices)
-        .sum::<u64>()
-        .add(1)
+        Err("The sides of a Spiral have odd length.".into())
+    } else {
+        let shells_dimensions = (1_u64..n).step_by(2);
+        let shell_vertices = |d: u64| {
+            (d.pow(2)..=(d + 2).pow(2))
+                .step_by((d + 1) as usize)
+                .skip(1)
+                .take(4)
+        };
+        Ok(shells_dimensions.flat_map(Box::new(shell_vertices)))
+    }
+}
+
+/// Get the sum of diagonals on a spiral of side `n`.
+pub fn spiral_diagonals_sum(n: u64) -> Result<u64, String> {
+    Ok(vertices_of_number_spiral(n)?.sum::<u64>().add(1))
 }
 
 /// Get all circular shifts of a number `n`.
