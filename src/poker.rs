@@ -215,7 +215,7 @@ mod test {
     #[test]
     fn poker_hand_test() {
         assert_eq!(
-            PokerHand::new(&vec![
+            PokerHand::new(&[
                 PokerCards(PokerCardSuit::Heart, 5),
                 PokerCards(PokerCardSuit::Clubs, 5),
                 PokerCards(PokerCardSuit::Spades, 6),
@@ -225,7 +225,7 @@ mod test {
             Ok(PokerHand::OnePair(5, 13))
         );
         assert_eq!(
-            PokerHand::new(&vec![
+            PokerHand::new(&[
                 PokerCards(PokerCardSuit::Clubs, 2),
                 PokerCards(PokerCardSuit::Spades, 3),
                 PokerCards(PokerCardSuit::Spades, 8),
@@ -235,7 +235,7 @@ mod test {
             Ok(PokerHand::OnePair(8, 10))
         );
         assert_eq!(
-            PokerHand::new(&vec![
+            PokerHand::new(&[
                 PokerCards(PokerCardSuit::Diamond, 5),
                 PokerCards(PokerCardSuit::Clubs, 8),
                 PokerCards(PokerCardSuit::Spades, 9),
@@ -245,7 +245,7 @@ mod test {
             Ok(PokerHand::HighCard(14))
         );
         assert_eq!(
-            PokerHand::new(&vec![
+            PokerHand::new(&[
                 PokerCards(PokerCardSuit::Clubs, 2),
                 PokerCards(PokerCardSuit::Clubs, 5),
                 PokerCards(PokerCardSuit::Diamond, 7),
@@ -255,7 +255,7 @@ mod test {
             Ok(PokerHand::HighCard(12))
         );
         assert_eq!(
-            PokerHand::new(&vec![
+            PokerHand::new(&[
                 PokerCards(PokerCardSuit::Diamond, 2),
                 PokerCards(PokerCardSuit::Clubs, 9),
                 PokerCards(PokerCardSuit::Spades, 14),
@@ -265,7 +265,7 @@ mod test {
             Ok(PokerHand::ThreeOfAKind(14, 9))
         );
         assert_eq!(
-            PokerHand::new(&vec![
+            PokerHand::new(&[
                 PokerCards(PokerCardSuit::Diamond, 3),
                 PokerCards(PokerCardSuit::Diamond, 6),
                 PokerCards(PokerCardSuit::Diamond, 7),
@@ -275,7 +275,7 @@ mod test {
             Ok(PokerHand::Flush(12))
         );
         assert_eq!(
-            PokerHand::new(&vec![
+            PokerHand::new(&[
                 PokerCards(PokerCardSuit::Diamond, 4),
                 PokerCards(PokerCardSuit::Spades, 6),
                 PokerCards(PokerCardSuit::Heart, 9),
@@ -285,7 +285,7 @@ mod test {
             Ok(PokerHand::OnePair(12, 9))
         );
         assert_eq!(
-            PokerHand::new(&vec![
+            PokerHand::new(&[
                 PokerCards(PokerCardSuit::Diamond, 3),
                 PokerCards(PokerCardSuit::Diamond, 6),
                 PokerCards(PokerCardSuit::Heart, 7),
@@ -295,7 +295,7 @@ mod test {
             Ok(PokerHand::OnePair(12, 7))
         );
         assert_eq!(
-            PokerHand::new(&vec![
+            PokerHand::new(&[
                 PokerCards(PokerCardSuit::Heart, 2),
                 PokerCards(PokerCardSuit::Diamond, 2),
                 PokerCards(PokerCardSuit::Clubs, 4),
@@ -305,7 +305,7 @@ mod test {
             Ok(PokerHand::FullHouse(4, 2))
         );
         assert_eq!(
-            PokerHand::new(&vec![
+            PokerHand::new(&[
                 PokerCards(PokerCardSuit::Clubs, 3),
                 PokerCards(PokerCardSuit::Diamond, 3),
                 PokerCards(PokerCardSuit::Spades, 3),
