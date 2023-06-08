@@ -90,15 +90,15 @@ mod test {
 
     #[test]
     fn is_cyclic_test() {
-        assert_eq!(UnitFraction::from(1).is_cyclic(), false);
-        assert_eq!(UnitFraction::from(2).is_cyclic(), false);
-        assert_eq!(UnitFraction::from(3).is_cyclic(), true);
-        assert_eq!(UnitFraction::from(4).is_cyclic(), false);
-        assert_eq!(UnitFraction::from(5).is_cyclic(), false);
-        assert_eq!(UnitFraction::from(6).is_cyclic(), true);
-        assert_eq!(UnitFraction::from(7).is_cyclic(), true);
-        assert_eq!(UnitFraction::from(8).is_cyclic(), false);
-        assert_eq!(UnitFraction::from(9).is_cyclic(), true);
+        assert!(!UnitFraction::from(1).is_cyclic());
+        assert!(!UnitFraction::from(2).is_cyclic());
+        assert!(UnitFraction::from(3).is_cyclic());
+        assert!(!UnitFraction::from(4).is_cyclic());
+        assert!(!UnitFraction::from(5).is_cyclic());
+        assert!(UnitFraction::from(6).is_cyclic());
+        assert!(UnitFraction::from(7).is_cyclic());
+        assert!(!UnitFraction::from(8).is_cyclic());
+        assert!(UnitFraction::from(9).is_cyclic());
     }
 
     #[test]
