@@ -81,10 +81,7 @@ mod test {
             grid_vertical_product(&GRID, 0, 0, 4),
             Some(8 * 49 * 81 * 52)
         );
-        assert_eq!(
-            grid_vertical_product(&GRID, 0, 16, 4),
-            Some(4 * 20 * 20 * 1)
-        );
+        assert_eq!(grid_vertical_product(&GRID, 0, 16, 4), Some(4 * 20 * 20));
         assert_eq!(grid_vertical_product(&GRID, 0, 17, 4), None);
         assert_eq!(
             grid_vertical_product(&GRID, 19, 16, 4),
