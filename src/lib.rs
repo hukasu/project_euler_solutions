@@ -37,9 +37,8 @@ pub fn is_prime(f: u64) -> bool {
     match f {
         2 | 3 => true,
         a if a <= 1 || (a % 2 == 0) || (a % 3 == 0) => false,
-        a => !(5..a)
+        a => !(5..((a + 1) as f64).sqrt() as u64)
             .step_by(6)
-            .filter(|i| i * i <= a)
             .any(|i| a % i == 0 || a % (i + 2) == 0),
     }
 }
@@ -872,6 +871,11 @@ pub fn is_lychrel_number(n: &u64, limit: u64) -> bool {
             Some(p.clone())
         })
         .any(|n| n.is_palindrome())
+}
+
+/// Verifies if the concatenation of 2 numbers `r` and `l`, on both orientations, (`rl` and `lr`) are primes.
+pub fn is_pair_concatenation_prime(l: &u64, r: &u64) -> bool {
+    is_prime(l * 10_u64.pow(r.ilog10() + 1) + r) && is_prime(r * 10_u64.pow(l.ilog10() + 1) + l)
 }
 
 /// Preprocesses a string for the Knuth-Morris-Pratt string search algorithm.
