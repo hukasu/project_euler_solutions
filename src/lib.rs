@@ -858,6 +858,14 @@ pub fn is_pair_concatenation_prime(l: &u64, r: &u64) -> bool {
     is_prime(l * 10_u64.pow(r.ilog10() + 1) + r) && is_prime(r * 10_u64.pow(l.ilog10() + 1) + l)
 }
 
+/// Check if the last `n` digits of `l` are the first `n` digits of `r`.
+pub fn cyclic_number(l: &u64, r: &u64, n: u32) -> bool {
+    match l.ilog10() <= n || r.ilog10() <= n {
+        true => false,
+        false => l % 10_u64.pow(n) == r / 10_u64.pow(r.ilog10() - n + 1),
+    }
+}
+
 /// Preprocesses a string for the Knuth-Morris-Pratt string search algorithm.
 pub fn knuth_morris_pratt_prepocessing(s: &str) -> Vec<isize> {
     let w: Vec<_> = s.chars().collect();
