@@ -10,20 +10,20 @@ fn main() {
 
 #[cfg(test)]
 mod test {
-    use project_euler::nth_triangle_numbers;
+    use project_euler::nth_triangle_number;
 
     use super::*;
 
     #[test]
     fn is_triangle_number_test() {
-        assert!(is_triangle_number(nth_triangle_numbers(1)));
-        assert!(is_triangle_number(nth_triangle_numbers(2)));
-        assert!(is_triangle_number(nth_triangle_numbers(3)));
-        assert!(is_triangle_number(nth_triangle_numbers(4)));
-        assert!(is_triangle_number(nth_triangle_numbers(5)));
-        assert!(is_triangle_number(nth_triangle_numbers(6)));
-        assert!(is_triangle_number(nth_triangle_numbers(7)));
-        assert!(is_triangle_number(nth_triangle_numbers(8)));
+        assert!(is_triangle_number(nth_triangle_number(1)));
+        assert!(is_triangle_number(nth_triangle_number(2)));
+        assert!(is_triangle_number(nth_triangle_number(3)));
+        assert!(is_triangle_number(nth_triangle_number(4)));
+        assert!(is_triangle_number(nth_triangle_number(5)));
+        assert!(is_triangle_number(nth_triangle_number(6)));
+        assert!(is_triangle_number(nth_triangle_number(7)));
+        assert!(is_triangle_number(nth_triangle_number(8)));
         assert!(!is_triangle_number(2));
         assert!(!is_triangle_number(5));
         assert!(!is_triangle_number(7));

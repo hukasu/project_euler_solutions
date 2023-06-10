@@ -10,6 +10,9 @@ pub use big_uint::*;
 mod british_usage;
 pub use british_usage::*;
 
+mod figurate_numbers;
+pub use figurate_numbers::*;
+
 mod poker;
 pub use poker::*;
 
@@ -347,23 +350,10 @@ pub fn grid_diagonal_left_product<const N: usize>(
         .map(|v| v.into_iter().product())
 }
 
-/// Check if `n` is a triangle number.
-pub fn is_triangle_number(n: u64) -> bool {
-    let delta = 1 + 8 * n;
-    let x1 = (-1. + (delta as f64).sqrt()) / 2.;
-    let x2 = (-1. - (delta as f64).sqrt()) / 2.;
-    x1.fract() == 0.0 && x2.fract() == 0.0
-}
-
-/// Get the `n`th triagle number
-pub fn nth_triangle_numbers(n: u64) -> u64 {
-    n * (n + 1) / 2
-}
-
 /// Get the first Triangle number with N factors.
 pub fn first_triangle_number_with_over_n_factors(factor_count: u64) -> u64 {
     (0..=factor_count.pow(2))
-        .map(nth_triangle_numbers)
+        .map(nth_triangle_number)
         .find(|t| get_factors(*t).len() as u64 >= (factor_count - 2))
         .unwrap_or(0)
 }
@@ -746,16 +736,6 @@ pub fn right_triangles_of_perimeter_p(p: u64) -> Vec<(u64, u64, u64)> {
     }
 
     r
-}
-
-/// Get the `n`th pentagon numbers.
-pub fn pentagon_number(n: u64) -> u64 {
-    n * (3 * n - 1) / 2
-}
-
-/// Get the `n`th pentagon numbers.
-pub fn hexagonal_number(n: u64) -> u64 {
-    n * (2 * n - 1)
 }
 
 /// Find sequencial numbers of length `window` that all have `factor` distinct prime factors.
