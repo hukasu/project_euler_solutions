@@ -40,7 +40,7 @@ pub fn is_prime(f: u64) -> bool {
     match f {
         2 | 3 => true,
         a if a <= 1 || (a % 2 == 0) || (a % 3 == 0) => false,
-        a => !(5..((a + 1) as f64).sqrt() as u64)
+        a => !(5..=((a + 1) as f64).sqrt() as u64)
             .step_by(6)
             .any(|i| a % i == 0 || a % (i + 2) == 0),
     }
