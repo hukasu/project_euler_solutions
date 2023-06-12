@@ -24,5 +24,5 @@ fn main() {
         .fold(u64::MAX, |min, entry| {
             *entry.1.iter().min().unwrap_or(&u64::MAX).min(&min)
         });
-    dbg!(r);
+    println!("{}", r);
 }
